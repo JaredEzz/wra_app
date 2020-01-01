@@ -12,13 +12,13 @@ class Routes {
       onGenerateRoute: (RouteSettings settings) {
         switch (settings.name) {
           case '/login':
-            return new MyCustomRoute(
+            return new CustomRoute(
               builder: (_) => new LoginScreen(),
               settings: settings,
             );
 
           case '/home':
-            return new MyCustomRoute(
+            return new CustomRoute(
 //              builder: (_) => new HomeScreen(),
               builder: (_) => new CardDemo(),
               settings: settings,
@@ -29,8 +29,8 @@ class Routes {
   }
 }
 
-class MyCustomRoute<T> extends MaterialPageRoute<T> {
-  MyCustomRoute({WidgetBuilder builder, RouteSettings settings})
+class CustomRoute<T> extends MaterialPageRoute<T> {
+  CustomRoute({WidgetBuilder builder, RouteSettings settings})
       : super(builder: builder, settings: settings);
 
   @override

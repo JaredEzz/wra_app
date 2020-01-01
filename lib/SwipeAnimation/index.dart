@@ -14,10 +14,12 @@ class CardDemo extends StatefulWidget {
 
 class CardDemoState extends State<CardDemo> with TickerProviderStateMixin {
   AnimationController _buttonController;
+  AnimationController _screenController;
   Animation<double> rotate;
   Animation<double> right;
   Animation<double> bottom;
   Animation<double> width;
+  Animation<Color> fadeScreenAnimation;
   int flag = 0;
 
   List data = imageData;
@@ -25,8 +27,22 @@ class CardDemoState extends State<CardDemo> with TickerProviderStateMixin {
   void initState() {
     super.initState();
 
+    _screenController = new AnimationController(
+      duration: new Duration(milliseconds: 2000), vsync: this);
+
     _buttonController = new AnimationController(
         duration: new Duration(milliseconds: 1000), vsync: this);
+
+    fadeScreenAnimation = new ColorTween(
+      begin: const Color.fromRGBO(106, 94, 175, 1.0),
+      end: const Color.fromRGBO(106, 94, 175, 0.0),
+    )
+    .animate(
+      new CurvedAnimation(
+          parent: _screenController,
+          curve: Curves.ease,
+      ),
+    );
 
     rotate = new Tween<double>(
       begin: -0.0,
@@ -118,15 +134,29 @@ class CardDemoState extends State<CardDemo> with TickerProviderStateMixin {
     _swipeAnimation();
   }
 
+  String currentProfilePic = "https://avatars3.githubusercontent.com/u/16825392?s=460&v=4";
+  String otherProfilePic = "https://yt3.ggpht.com/-2_2skU9e2Cw/AAAAAAAAAAI/AAAAAAAAAAA/6NpH9G8NWf4/s900-c-k-no-mo-rj-c0xffffff/photo.jpg";
+
+  void switchAccounts() {
+    String picBackup = currentProfilePic;
+    this.setState(() {
+      currentProfilePic = otherProfilePic;
+      otherProfilePic = picBackup;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     timeDilation = 0.4;
+    Size screenSize = MediaQuery.of(context).size;
+    final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
     double initialBottom = 15.0;
     var dataLength = data.length;
     double backCardPosition = initialBottom + (dataLength - 1) * 10 + 10;
     double backCardWidth = -10.0;
     return (new Scaffold(
+        key: _scaffoldKey,
         appBar: new AppBar(
           elevation: 0.0,
           backgroundColor: new Color.fromRGBO(106, 94, 175, 1.0),
@@ -135,10 +165,11 @@ class CardDemoState extends State<CardDemo> with TickerProviderStateMixin {
             margin: const EdgeInsets.all(15.0),
             child: GestureDetector(
               onTap: () {
-                Navigator.pushReplacementNamed(context, "/login");
+                _scaffoldKey.currentState.openDrawer();
+//                Navigator.pushReplacementNamed(context, "/login");
               },
               child: Icon(
-                Icons.arrow_back_ios,
+                Icons.account_circle,
                 color: Colors.cyan,
                 size: 30.0,
               ),
@@ -186,6 +217,56 @@ class CardDemoState extends State<CardDemo> with TickerProviderStateMixin {
             ],
           ),
         ),
+        drawer: new Drawer(
+          child: new ListView(
+            children: <Widget>[
+              new UserAccountsDrawerHeader(
+                accountEmail: new Text("bramvbilsen@gmail.com"),
+                accountName: new Text("Bramvbilsen"),
+                currentAccountPicture: new GestureDetector(
+                  child: new CircleAvatar(
+                    backgroundImage: new NetworkImage(currentProfilePic),
+                  ),
+                  onTap: () => print("This is your current account."),
+                ),
+                otherAccountsPictures: <Widget>[
+                  new GestureDetector(
+    child: new CircleAvatar(
+    backgroundImage: new NetworkImage(otherProfilePic),
+    ),
+    onTap: () => switchAccounts(),
+    ),
+    ],
+    decoration: new BoxDecoration(
+    image: new DecorationImage(
+    image: new NetworkImage("https://img00.deviantart.net/35f0/i/2015/018/2/6/low_poly_landscape__the_river_cut_by_bv_designs-d8eib00.jpg"),
+    fit: BoxFit.fill
+    )
+    ),
+    ),
+    new ListTile(
+    title: new Text("Page One"),
+    trailing: new Icon(Icons.arrow_upward),
+    onTap: () {
+    Navigator.of(context).pop();
+    }
+    ),
+    new ListTile(
+    title: new Text("Page Two"),
+    trailing: new Icon(Icons.arrow_right),
+    onTap: () {
+    Navigator.of(context).pop();
+    }
+    ),
+    new Divider(),
+    new ListTile(
+    title: new Text("Cancel"),
+    trailing: new Icon(Icons.cancel),
+    onTap: () => Navigator.pop(context),
+    ),
+    ],
+    ),
+    ),
         body: new Container(
           color: new Color.fromRGBO(106, 94, 175, 1.0),
           alignment: Alignment.center,
