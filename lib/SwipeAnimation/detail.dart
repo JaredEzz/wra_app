@@ -256,8 +256,7 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
                       child: new Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
-                          new FlatButton(
-                              padding: new EdgeInsets.all(0.0),
+                          new ElevatedButton(
                               onPressed: () {},
                               child: new Container(
                                 height: 60.0,
@@ -272,8 +271,7 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
                                   style: new TextStyle(color: Colors.white),
                                 ),
                               )),
-                          new FlatButton(
-                              padding: new EdgeInsets.all(0.0),
+                          new ElevatedButton(
                               onPressed: () {},
                               child: new Container(
                                 height: 60.0,

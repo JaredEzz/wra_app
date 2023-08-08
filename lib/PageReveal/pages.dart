@@ -10,11 +10,11 @@ final pages=[
 
 ];
 
-class Page extends StatelessWidget {
+class WRAPage extends StatelessWidget {
 
   final PageViewModel viewModel;
   final double percentVisible;
-Page({this.viewModel,this.percentVisible=1.0});
+WRAPage({this.viewModel,this.percentVisible=1.0});
 
   @override
   Widget build(BuildContext context) {

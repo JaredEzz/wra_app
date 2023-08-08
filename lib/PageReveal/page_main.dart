@@ -85,14 +85,14 @@ class PageMainState extends State<PageMain> with TickerProviderStateMixin {
     // print(slidePercent);
     return (new Scaffold(
         body: new Stack(
-      children: <Widget>[
-        new Page(
+      children: [
+        new WRAPage(
           viewModel: pages[activeIndex],
           percentVisible: 1.0,
         ),
         new PageReveal(
           revealPercent: slidePercent,
-          child: new Page(
+          child: new WRAPage(
             viewModel: pages[nextPageIndex],
             percentVisible: slidePercent,
           ),
